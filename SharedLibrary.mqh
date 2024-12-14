@@ -2,7 +2,24 @@
 #property strict
 
 //**********************************************************************************************************************
-
+string forbiddenSymbolsAdmirals[] = {"USDZAR-Z", "USDZAR", "USDUAH-Z", "USDUAH", "USDTHB", "USDSGD", "USDSEK",
+                                     "USDRON-Z", "USDPEN", "USDNOK", "USDMXN-Z", "USDMXN", "USDJOD-Z", "USDJOD",
+                                     "USDHUF", "USDHRK-Z", "USDHRK", "USDHKD", "USDDKK-Z", "USDCNH-Z", "USDCLP-Z",
+                                     "USDCLP", "USDBRL-Z", "USDBRL", "USDBGN-Z", "USDBGN", "USDAED-Z", "USDAED",
+                                     "I.USDX", "I.EURX", "GLDUSD", "GBXUSD", "GBPHKD", "EURRON", "EURHKD"                           
+                                    };
+                                    
+//**********************************************************************************************************************
+bool isSymbolForbidden(string symbol)
+{
+   for(int i = 0; i < ArraySize(forbiddenSymbolsAdmirals); i++) {
+     if(symbol == forbiddenSymbolsAdmirals[i]) {
+        return true;
+     }
+   }
+   return false;
+}
+//**********************************************************************************************************************                                    
 bool isShare(string symbol)
 {
    int firstCharCode = StringGetChar(symbol, 0);
