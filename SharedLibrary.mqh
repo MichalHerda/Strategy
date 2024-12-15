@@ -2,7 +2,7 @@
 #property strict
 
 //**********************************************************************************************************************
-string forbiddenSymbolsAdmirals[] = {"USDZAR-Z", "USDZAR", "USDUAH-Z", "USDUAH", "USDTHB", "USDSGD", "USDSEK",
+string forbiddenSymbolsAdmirals[] = {"USDZAR-Z", "USDZAR", "USDUAH-Z", "USDUAH", "USDTHB", "USDSGD", "USDSEK", "USDRUB", "EURRUB",
                                      "USDRON-Z", "USDPEN", "USDNOK", "USDMXN-Z", "USDMXN", "USDJOD-Z", "USDJOD",
                                      "USDHUF", "USDHRK-Z", "USDHRK", "USDHKD", "USDDKK-Z", "USDCNH-Z", "USDCLP-Z",
                                      "USDCLP", "USDBRL-Z", "USDBRL", "USDBGN-Z", "USDBGN", "USDAED-Z", "USDAED",
@@ -51,8 +51,8 @@ int getTrendDuration(string symbol,
                      ENUM_APPLIED_PRICE movAvePrice,
                      int period)
 {
-   double movAveBar1 = iMA(symbol, tf, 5, 1, movAveMethod, movAvePrice, 0);
-   double movAveBar2 = iMA(symbol, tf, 5, 2, movAveMethod, movAvePrice, 0);
+   double movAveBar1 = iMA(symbol, tf, period, 1, movAveMethod, movAvePrice, 0);
+   double movAveBar2 = iMA(symbol, tf, period, 2, movAveMethod, movAvePrice, 0);
    int trendDuration = 0;
    
    while(movAveBar1 > movAveBar2)
