@@ -6,7 +6,8 @@ string forbiddenSymbolsAdmirals[] = {"USDZAR-Z", "USDZAR", "USDUAH-Z", "USDUAH",
                                      "USDRON-Z", "USDPEN", "USDNOK", "USDMXN-Z", "USDMXN", "USDJOD-Z", "USDJOD",
                                      "USDHUF", "USDHRK-Z", "USDHRK", "USDHKD", "USDDKK-Z", "USDCNH-Z", "USDCLP-Z",
                                      "USDCLP", "USDBRL-Z", "USDBRL", "USDBGN-Z", "USDBGN", "USDAED-Z", "USDAED",
-                                     "I.USDX", "I.EURX", "GLDUSD", "GBXUSD", "GBPHKD", "EURRON", "EURHKD"                           
+                                     "I.USDX", "I.EURX", "GLDUSD", "GBXUSD", "GBPHKD", "EURRON", "EURHKD", 
+                                     "BTCEUR", "BTCUSD", "ETHUSD", "LTCUSD", "XRPUSD", "BCHUSD", "LTCEUR"
                                     };
                                     
 //**********************************************************************************************************************
@@ -30,34 +31,34 @@ bool isShare(string symbol)
 
 bool isRisingTrend(string symbol, 
                    ENUM_TIMEFRAMES tf, 
-                   ENUM_MA_METHOD maMethod,
-                   ENUM_APPLIED_PRICE maPrice,
+                   ENUM_MA_METHOD movAveMethod,
+                   ENUM_APPLIED_PRICE movAvePrice,
                    int period, 
                    int idxLater, 
                    int idxBefore)
 {
-   double movAveBar1 = iMA(symbol, tf, period, idxLater, maMethod, maPrice, 0);
-   double movAveBar2 = iMA(symbol, tf, period, idxBefore, maMethod, maPrice, 0);
+   double movAveBar1 = iMA(symbol, tf, period, idxLater, movAveMethod, movAvePrice, 0);
+   double movAveBar2 = iMA(symbol, tf, period, idxBefore, movAveMethod, movAvePrice, 0);
 
    return movAveBar1 > movAveBar2;
-}
+} 
 
 //**********************************************************************************************************************
 
 int getTrendDuration(string symbol, 
                      ENUM_TIMEFRAMES tf, 
-                     ENUM_MA_METHOD maMethod,
-                     ENUM_APPLIED_PRICE maPrice,
+                     ENUM_MA_METHOD movAveMethod,
+                     ENUM_APPLIED_PRICE movAvePrice,
                      int period)
 {
-   double movAveBar1 = iMA(symbol, tf, 5, 1, maMethod, maPrice, 0);
-   double movAveBar2 = iMA(symbol, tf, 5, 2, maMethod, maPrice, 0);
+   double movAveBar1 = iMA(symbol, tf, 5, 1, movAveMethod, movAvePrice, 0);
+   double movAveBar2 = iMA(symbol, tf, 5, 2, movAveMethod, movAvePrice, 0);
    int trendDuration = 0;
    
    while(movAveBar1 > movAveBar2)
      {
-      movAveBar1 = iMA(symbol, tf, period, trendDuration + 1, maMethod, maPrice, 0);
-      movAveBar2 = iMA(symbol, tf, period, trendDuration + 2, maMethod, maPrice, 0);
+      movAveBar1 = iMA(symbol, tf, period, trendDuration + 1, movAveMethod, movAvePrice, 0);
+      movAveBar2 = iMA(symbol, tf, period, trendDuration + 2, movAveMethod, movAvePrice, 0);
       trendDuration++;
      }
 
