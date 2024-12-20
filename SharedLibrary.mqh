@@ -39,6 +39,10 @@ bool isRisingTrend(string symbol,
 {
    double movAveBar1 = iMA(symbol, tf, period, idxLater, movAveMethod, movAvePrice, 0);
    double movAveBar2 = iMA(symbol, tf, period, idxBefore, movAveMethod, movAvePrice, 0);
+   
+   Print("IS RISING TREND: ");
+   Print("  period: ", tf, "movAveBar1: ", movAveBar1);
+   Print("  period: ", tf, "movAveBar2: ", movAveBar2);
 
    return movAveBar1 > movAveBar2;
 } 
