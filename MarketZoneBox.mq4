@@ -50,6 +50,7 @@ void appendTrendDirectionArray()
   {
     ArrayResize(trendDirectionArray, 0);
     
+    //debugging and tests:
     int allBarsAvailable = iBars(Symbol(), lowTimeFrame);
     int firstBarIdx = allBarsAvailable - lowTimeFramePeriod - 1;    
     datetime firstBarDate = iTime(Symbol(), lowTimeFrame, firstBarIdx);
@@ -61,6 +62,7 @@ void appendTrendDirectionArray()
     Print("    firstBarDate: ", firstBarDate);
     Print("    firstBarClose: ", firstBarClose);
     
+    //append array:
     for(int i = firstBarIdx; i > 0; i--) {
       datetime lowTimeFrameBarTime = iTime(Symbol(), lowTimeFrame, i);
       int mediumTimeFrameBarShift = iBarShift(Symbol(), mediumTimeFrame, lowTimeFrameBarTime);
@@ -83,6 +85,23 @@ void appendTrendDirectionArray()
       trendDirectionArray[currentIdx].isMediumTrendRising = isMediumTrendRising;
       trendDirectionArray[currentIdx].isLowTrendRising = isLowTrendRising;
     }
+    
+    //write to file:
+    int fileHandle = FileOpen("trendDirectionArray", FILE_WRITE);
+      
+      if(fileHandle != INVALID_HANDLE) {
+         for(int i = 0; i < ArraySize(trendDirectionArray); i++) {
+            FileWrite(fileHandle, i, 
+                      " isHighTrendRising: ", trendDirectionArray[i].isHighTrendRising,
+                      " isMediumTrendRising: ", trendDirectionArray[i].isMediumTrendRising,
+                      " isLowTrendRising: ", trendDirectionArray[i].isLowTrendRising); 
+         }
+         FileClose(fileHandle);
+      }
+      else {
+         Print("FAILED TO SAVE FILE");   
+      }
+    
   }
 //**********************************************************************************************************************
 int OnInit()
