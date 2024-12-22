@@ -9,6 +9,7 @@ struct timePeriod
 //**********************************************************************************************************************
 struct trendDirection
   {
+   datetime time;
    bool isLowTrendRising;
    bool isMediumTrendRising;
    bool isHighTrendRising;
@@ -80,6 +81,7 @@ void appendTrendDirectionArray()
             
       ArrayResize(trendDirectionArray, ArraySize(trendDirectionArray) + 1);
       int currentIdx = ArraySize(trendDirectionArray) - 1;
+      trendDirectionArray[currentIdx].time = lowTimeFrameBarTime;
       trendDirectionArray[currentIdx].isHighTrendRising = isHighTrendRising;
       trendDirectionArray[currentIdx].isMediumTrendRising = isMediumTrendRising;
       trendDirectionArray[currentIdx].isLowTrendRising = isLowTrendRising;
@@ -90,7 +92,7 @@ void appendTrendDirectionArray()
       
       if(fileHandle != INVALID_HANDLE) {
          for(int i = 0; i < ArraySize(trendDirectionArray); i++) {
-            FileWrite(fileHandle, i, 
+            FileWrite(fileHandle, i, trendDirectionArray[i].time,
                       " isHighTrendRising: ", trendDirectionArray[i].isHighTrendRising,
                       " isMediumTrendRising: ", trendDirectionArray[i].isMediumTrendRising,
                       " isLowTrendRising: ", trendDirectionArray[i].isLowTrendRising); 
