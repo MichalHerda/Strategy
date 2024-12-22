@@ -6,7 +6,6 @@ struct timePeriod
    datetime beginDate;
    datetime endDate;
   };
-
 //**********************************************************************************************************************
 struct trendDirection
   {
@@ -100,14 +99,186 @@ void appendTrendDirectionArray()
       }
       else {
          Print("FAILED TO SAVE FILE");   
-      }
-    
+      }    
   }
+//**********************************************************************************************************************
+void appendTimePeriodArray()
+   {
+    ArrayResize(timePeriodArray, 0);
+    bool isPeriodWriting = false;
+    
+    for (int i = ArraySize(trendDirectionArray) - 1; i >= 0; i--) {
+      
+            switch(maCombination) {
+               
+               case NONE:
+                  break;
+                  
+               case LOW:
+                   if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isLowTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), lowTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isLowTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), lowTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;   
+                     }    
+                  }   
+                  break;
+                                
+               case MEDIUM:
+                  if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isMediumTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), mediumTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isMediumTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), mediumTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;   
+                     }      
+                  }   
+                  break;   
+                              
+               case HIGH:
+                  if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), highTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), highTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;   
+                     }                               
+                  }   
+                  break;
+                                
+               case LOW_MEDIUM:
+                  if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isLowTrendRising || !trendDirectionArray[i].isMediumTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), lowTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isLowTrendRising && trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), lowTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;   
+                     }                            
+                  }   
+                  break;      
+                  
+               case MEDIUM_HIGH:
+                  if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isMediumTrendRising || !trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), mediumTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isMediumTrendRising && trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), mediumTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;
+                     }                        
+                  }   
+                  break;      
+                  
+               case LOW_HIGH:
+                  if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isLowTrendRising || !trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), lowTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isLowTrendRising && trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), lowTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;
+                     }                          
+                  }   
+                  break;
+                  
+               case ALL:
+                  if(isPeriodWriting) {
+                     if(!trendDirectionArray[i].isLowTrendRising || !trendDirectionArray[i].isMediumTrendRising ||
+                        !trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = false;
+                        datetime endDate = iTime(Symbol(), lowTimeFrame, i); 
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate; 
+                     }
+                  }
+                  else {
+                     if(trendDirectionArray[i].isLowTrendRising && trendDirectionArray[i].isHighTrendRising && 
+                        trendDirectionArray[i].isHighTrendRising) {
+                        isPeriodWriting = true;
+                        ArrayResize(timePeriodArray, ArraySize(timePeriodArray) + 1);
+                        datetime beginDate = iTime(Symbol(), lowTimeFrame, i);
+                        timePeriodArray[ArraySize(timePeriodArray) - 1].beginDate = beginDate;     
+                     }   
+                  }   
+                  break;
+                  
+               default:
+                  break;         
+            
+            }
+    } 
+      
+    if (isPeriodWriting) {
+        datetime endDate = iTime(Symbol(), lowTimeFrame, 0);
+        timePeriodArray[ArraySize(timePeriodArray) - 1].endDate = endDate;
+    }
+    
+    Print("timePeriodArray size: ", ArraySize(timePeriodArray));
+    
+    int fileHandle = FileOpen("timePeriodArray", FILE_WRITE);
+    
+    if(fileHandle != INVALID_HANDLE) {
+      for(int i = 0; i < ArraySize(timePeriodArray); i++) {
+         FileWrite(fileHandle,
+                   i + 1,
+                   timePeriodArray[i].beginDate,
+                   timePeriodArray[i].endDate);
+      }
+      FileClose(fileHandle);
+    }
+    else {
+      Print("chartIndicators invalid handle");
+    }  
+    //Print("highest price: ", getAllTimeMaximumPrice(symbol));
+    //if(writingIndicatorsEnable) writeIndicatorOnChart(symbol);     
+   }          
+
 //**********************************************************************************************************************
 int OnInit()
   {
    EventSetTimer(10);
    appendTrendDirectionArray();
+   appendTimePeriodArray();
    return(INIT_SUCCEEDED);
   }
 //**********************************************************************************************************************
