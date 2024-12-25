@@ -13,6 +13,13 @@ input int lowPeriod = 10;
 ENUM_MA_METHOD maMethod = MODE_SMA;
 ENUM_APPLIED_PRICE maPrice = PRICE_CLOSE;
 //**********************************************************************************************************************
+enum tradeResult
+  {
+   TP,
+   SL,
+   NONE
+  };
+//**********************************************************************************************************************
 struct testRecord 
   {
    datetime timeStamp;
@@ -26,6 +33,7 @@ struct testRecord
    double closePrice;
    double highPrice;
    double lowPrice;
+   tradeResult result;
   };
 //**********************************************************************************************************************
 struct trendDirection
@@ -45,6 +53,14 @@ bool checkForHighTFConditions(int idx)
             trendDirectionArray[idx].isMediumTrendRising &&
             trendDirectionArray[idx].isLowTrendRising;
   }
+//**********************************************************************************************************************  
+bool checkForLowTFConditions(int idx)
+  {
+     double movAve = iMA(Symbol(), lowTF, lowPeriod, idx, maMethod, maPrice, 0);
+     double lowestPrice = iLow(Symbol(), lowTF, idx);
+     
+     return lowestPrice < movAve;
+  }  
 //**********************************************************************************************************************   
 bool isRisingTrend(string symbol, ENUM_TIMEFRAMES tf, int period, int idxLater, int idxBefore)
   {
@@ -127,11 +143,13 @@ void appendTestRecordArray()
     ArrayResize(testRecordArray, 0);
     
     for (int i = 0; i <= ArraySize(trendDirectionArray) - 1; i++) {
+      Print("test: ", i);
       ArrayResize(testRecordArray, ArraySize(testRecordArray) + 1);
       int idx = ArraySize(testRecordArray) - 1;
       datetime timeStamp = trendDirectionArray[i].time;
       testRecordArray[idx].timeStamp = timeStamp;
       testRecordArray[idx].areHighTFs = checkForHighTFConditions(idx);
+      testRecordArray[idx].areLowTFConditions = checkForLowTFConditions(idx);
       
       
     }
@@ -143,7 +161,8 @@ void appendTestRecordArray()
          FileWrite(fileHandle,
                    i + 1,
                    testRecordArray[i].timeStamp,
-                   testRecordArray[i].areHighTFs
+                   testRecordArray[i].areHighTFs,
+                   testRecordArray[i].areLowTFConditions
                    );
       }
       FileClose(fileHandle);
