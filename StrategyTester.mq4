@@ -29,10 +29,10 @@ struct testRecord
    bool reachedSL;
    bool reachedTP;
    double accountBalance;
-   double openPrice;
-   double closePrice;
-   double highPrice;
-   double lowPrice;
+   double openBarPrice;
+   double closeBarPrice;
+   double highBarPrice;
+   double lowBarPrice;
    tradeResult result;
   };
 //**********************************************************************************************************************
@@ -141,15 +141,36 @@ void appendTrendDirectionArray(ENUM_TIMEFRAMES lowestTimeFrame, ENUM_TIMEFRAMES 
 void appendTestRecordArray()
   {
     ArrayResize(testRecordArray, 0);
+    //int barIdx = ArraySize(trendDirectionArray) - 1;
     
-    for (int i = 0; i <= ArraySize(trendDirectionArray) - 1; i++) {
+    for (int i = 0, barIdx = ArraySize(trendDirectionArray) - 1; 
+         i <= ArraySize(trendDirectionArray) - 1; i++, barIdx--) {
+         
       Print("test: ", i);
       ArrayResize(testRecordArray, ArraySize(testRecordArray) + 1);
-      int idx = ArraySize(testRecordArray) - 1;
+           
       datetime timeStamp = trendDirectionArray[i].time;
-      testRecordArray[idx].timeStamp = timeStamp;
-      testRecordArray[idx].areHighTFs = checkForHighTFConditions(idx);
-      testRecordArray[idx].areLowTFConditions = checkForLowTFConditions(idx);
+      bool areHighTFs = checkForHighTFConditions(i);
+      bool areLowTFConditions = checkForLowTFConditions(i);
+      bool isTradeOpen = false;
+      
+      testRecordArray[i].timeStamp = timeStamp;
+      testRecordArray[i].areHighTFs = areHighTFs;
+      testRecordArray[i].areLowTFConditions = areLowTFConditions;
+      
+      testRecordArray[i].openBarPrice = iOpen(Symbol(), lowTF, barIdx);
+      testRecordArray[i].closeBarPrice = iClose(Symbol(), lowTF, barIdx);
+      testRecordArray[i].highBarPrice = iHigh(Symbol(), lowTF, barIdx);
+      testRecordArray[i].lowBarPrice = iLow(Symbol(), lowTF, barIdx);
+      
+      if(!isTradeOpen) {
+         if(areHighTFs && areLowTFConditions) {
+      
+         }
+      }
+      else {
+      
+      }
       
       
     }
@@ -162,7 +183,11 @@ void appendTestRecordArray()
                    i + 1,
                    testRecordArray[i].timeStamp,
                    testRecordArray[i].areHighTFs,
-                   testRecordArray[i].areLowTFConditions
+                   testRecordArray[i].areLowTFConditions,
+                   "O:", testRecordArray[i].openBarPrice,
+                   "C:", testRecordArray[i].closeBarPrice,
+                   "H:", testRecordArray[i].highBarPrice,
+                   "L:", testRecordArray[i].lowBarPrice
                    );
       }
       FileClose(fileHandle);
