@@ -24,6 +24,12 @@ bool isShare(string symbol)
       return firstCharCode == '#';
    }
 //**********************************************************************************************************************
+bool isIndice(string symbol)
+   {
+      int firstCharCode = StringGetChar(symbol, 0);
+      return firstCharCode == '[';
+   }
+//**********************************************************************************************************************
 bool isRisingTrend(string symbol, 
                    ENUM_TIMEFRAMES tf, 
                    ENUM_MA_METHOD movAveMethod,
